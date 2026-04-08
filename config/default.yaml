@@ -1,0 +1,18 @@
+translator:
+  api_key: ""
+  base_url: "https://api.openai.com/v1"
+  model: "gpt-4"
+  temperature: 0.3
+  timeout: 60
+  max_retries: 3
+
+processing:
+  chunk_size: 15
+  max_parallel: 4
+  cache_enabled: true
+  cache_dir: ".cache"
+
+output:
+  output_dir: "output"
+  default_format: "markdown"
+  bilingual: false
