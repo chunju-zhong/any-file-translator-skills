@@ -1,0 +1,393 @@
+个能翻译多种文件或直接收文本输入的 Skill，供 AI Coding IDE 使用。
+支持格式: .txt, .pdf, .docx, .md, .epub 等
+支持超大文件: 1000-2000 页
+支持直接输出成pdf,docx,或md，超大文件拆分多个输出
+建立评估标准，全部翻译完成后，或超长文本或文件部分翻译完成后，根据评估标准进行翻译质量审查并评分，如果达不到要求需要根据建议修改翻译直到达标
+
+
+# ═══════════════════════════════════════════════════════════════
+# 会话 1: 产品和架构阶段
+# ═══════════════════════════════════════════════════════════════
+
+# Step 1: 创建 PRD（命令）
+/prp-prd
+# → 输入需求描述
+
+# Step 2: 保存会话（命令）
+/save-session any-file-translator-prd
+
+# Step 3: 架构设计（Agent）
+/agent architect 设计文档翻译系统架构，支持多格式、大文件处理
+# → 自动基于 PRD 进行架构设计
+# → 或：architect 设计文档翻译系统架构，支持多格式、大文件处理
+
+# Step 4: 保存会话（命令）
+/save-session any-file-translator-architect
+
+# Step 5: 多 PR 规划（Skill/命令）
+/blueprint any-file-translator "build document translation skill"
+
+# Step 6: 生成详细计划（命令）
+/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
+
+# Step 7: 保存会话
+/save-session any-file-translator-plan
+
+# ═══════════════════════════════════════════════════════════════
+# 会话 2: 实施阶段（TXT 解析器）
+# ═══════════════════════════════════════════════════════════════
+
+# 恢复会话
+/resume-session any-file-translator-plan
+
+# 执行计划
+/prp-implement .claude/PRPs/plans/txt-parser.plan.md
+
+# 创建 PR
+/prp-pr
+
+# 代码审查
+/code-review 1
+
+# 合并分支
+gh pr merge 1 --squash
+
+# 保存会话
+/save-session any-file-translator-txt-done
+
+# ═══════════════════════════════════════════════════════════════
+# 后续会话：重复实施阶段
+# ═══════════════════════════════════════════════════════════════
+
+# 恢复会话 → /prp-plan → /prp-implement → /prp-pr → /code-review → merge
+# (重复直到所有模块完成)
+
+# ═══════════════════════════════════════════════════════════════
+# 验收阶段
+# ═══════════════════════════════════════════════════════════════
+
+# 恢复会话
+/resume-session any-file-translator-prd
+
+# E2E 测试
+/e2e
+
+# 保存完成状态
+/save-session any-file-translator-complete
+
+
+
+
+# 详细命令序列说明
+
+## 📋 任意文档翻译 Skill - 跨会话保存 PRD 上下文的完整命令序列
+
+### 🔄 完整流程（含跨会话保存）
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    Any File Translator Skill - 跨会话工作流                   │
+│                                                                             │
+│   Step 1: /prp-prd        →  创建 PRD                                       │
+│   Step 2: /save-session   →  保存会话（跨会话保存 PRD 上下文）                  │
+│   Step 3: /agent architect   →  架构设计                                     │
+│   Step 4: /save-session   →  保存会话（跨会话保存 架构 上下文）                  │
+│   Step 5: /blueprint      →  多 PR 规划                                      │
+│   Step 6: /prp-plan       →  为每个 PR 生成详细计划                            │
+│   Step 7: /save-session   →  保存会话（保存规划上下文）                         │
+│   Step 8: /prp-implement  →  执行计划                                        │
+│   Step 9: /prp-pr         →  创建 PR                                        │
+│   Step 10: /code-review    →  代码审查                                       │
+│   Step 11: Merge          →  合并分支                                        │
+│   Step 12: /e2e           →  E2E 测试                                        │
+│   Step 13: /save-session  →  保存会话（保存完成状态）                           │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 📝 详细命令序列
+
+#### 会话 1: 产品和架构阶段
+
+```bash
+# Step 1: 创建 PRD
+/prp-prd 为以下新系统写PRD：一个能翻译多种文件或直接收文本输入的 Skill，供 AI Coding IDE 使用。输入支持格式为: 直接文本, .txt, .pdf, .docx, .md, .epub 等，支持超大文件: 比如pdf 1000-2000 页，支持输出成pdf,docx,或markdown，超大文件拆分成多个文件输出。建立评估标准，全部翻译完成后，或超长文本或文件部分翻译完成后，根据评估标准进行翻译质量审查并评分，如果达不到要求需要根据建议修改翻译直到达标
+
+# 输出: .claude/PRPs/prd/any-file-translator.prd.md
+
+# Step 2: 保存会话（跨会话保存 PRD 上下文）
+/save-session any-file-translator-prd
+
+# Step 3: 架构设计
+architect
+
+# 输出: docs/architecture.md, docs/ADR-001-architecture-decisions.md
+
+# Step 4: 保存会话（跨会话保存 架构 上下文）
+/save-session any-file-translator-architect                  │
+
+# Step 5: 多 PR 规划
+/blueprint any-file-translator "build document translation skill with multi-format output"
+
+# 输出: plans/any-file-translator-build-translation-skill.md
+
+# Step 6: 为第一个 PR 生成详细计划
+/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
+
+# 输出: .claude/PRPs/plans/core-infrastructure.plan.md
+
+# Step 7: 保存会话（保存规划上下文）
+/save-session any-file-translator-plan
+```
+
+---
+
+#### 会话 2: 实施阶段（Core Infrastructure）
+
+```bash
+# 恢复会话（加载之前的规划上下文）
+/resume-session any-file-translator-plan
+
+# Step 8: 执行计划
+/prp-implement .claude/PRPs/plans/core-infrastructure.plan.md
+
+# Step 9: 创建 PR
+/prp-pr
+
+# 输出: PR #1
+
+# Step 10: 代码审查
+/code-review 1
+
+# 输出: 审查结果
+
+# Step 11: 合并分支
+gh pr merge 1 --squash
+
+# 保存会话（保存完成状态）
+/save-session any-file-translator-txt-done
+```
+
+---
+
+#### 会话 3: 实施阶段（PDF 解析器）
+
+```bash
+# 恢复会话（加载 PRD 上下文）
+/resume-session any-file-translator-prd
+
+# 生成 PDF 解析器计划
+/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
+
+# 输出: .claude/PRPs/plans/pdf-parser.plan.md
+
+# 执行计划
+/prp-implement .claude/PRPs/plans/pdf-parser.plan.md
+
+# 创建 PR
+/prp-pr
+
+# 代码审查
+/code-review 2
+
+# 合并分支
+gh pr merge 2 --squash
+
+# 保存会话
+/save-session any-file-translator-pdf-done
+```
+
+---
+
+#### 会话 4: 实施阶段（其他解析器）
+
+```bash
+# 恢复会话
+/resume-session any-file-translator-prd
+
+# 生成 DOCX 解析器计划
+/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
+
+# 执行计划
+/prp-implement .claude/PRPs/plans/docx-parser.plan.md
+
+# 创建 PR
+/prp-pr
+
+# 代码审查
+/code-review 3
+
+# 合并分支
+gh pr merge 3 --squash
+
+# 生成 EPUB 解析器计划
+/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
+
+# 执行计划
+/prp-implement .claude/PRPs/plans/epub-parser.plan.md
+
+# 创建 PR
+/prp-pr
+
+# 代码审查
+/code-review 4
+
+# 合并分支
+gh pr merge 4 --squash
+
+# 保存会话
+/save-session any-file-translator-parsers-done
+```
+
+---
+
+#### 会话 5: 分块策略和翻译引擎
+
+```bash
+# 恢复会话
+/resume-session any-file-translator-prd
+
+# 生成分块策略计划
+/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
+
+# 执行计划
+/prp-implement .claude/PRPs/plans/chunking.plan.md
+
+# 创建 PR
+/prp-pr
+
+# 代码审查
+/code-review 5
+
+# 合并分支
+gh pr merge 5 --squash
+
+# 生成翻译引擎计划
+/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
+
+# 执行计划
+/prp-implement .claude/PRPs/plans/translation-engine.plan.md
+
+# 创建 PR
+/prp-pr
+
+# 代码审查
+/code-review 6
+
+# 合并分支
+gh pr merge 6 --squash
+
+# 保存会话
+/save-session any-file-translator-core-done
+```
+
+---
+
+#### 会话 6: 输出层和 Skill 集成
+
+```bash
+# 恢复会话
+/resume-session any-file-translator-prd
+
+# 生成输出层计划
+/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
+
+# 执行计划
+/prp-implement .claude/PRPs/plans/output.plan.md
+
+# 创建 PR
+/prp-pr
+
+# 代码审查
+/code-review 7
+
+# 合并分支
+gh pr merge 7 --squash
+
+# 生成 Skill 集成计划
+/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
+
+# 执行计划
+/prp-implement .claude/PRPs/plans/skill-integration.plan.md
+
+# 创建 PR
+/prp-pr
+
+# 代码审查
+/code-review 8
+
+# 合并分支
+gh pr merge 8 --squash
+
+# 保存会话
+/save-session any-file-translator-integration-done
+```
+
+---
+
+#### 会话 7: 验收阶段
+
+```bash
+# 恢复会话
+/resume-session any-file-translator-prd
+
+# Step 11: E2E 测试
+/e2e
+
+# 输出: E2E 测试报告
+
+# Step 12: 保存会话（保存完成状态）
+/save-session any-file-translator-complete
+```
+
+---
+
+### 📊 跨会话保存的关键点
+
+| 会话 | 保存点 | 保存内容 | 用途 |
+|------|--------|----------|------|
+| 1 | `/save-session any-file-translator-prd` | PRD 上下文 | 后续会话恢复 PRD 上下文 |
+| 1 | `/save-session any-file-translator-plan` | 规划上下文 | 下次会话继续实施 |
+| 2 | `/save-session any-file-translator-txt-done` | TXT 解析器完成状态 | 追踪进度 |
+| 3 | `/save-session any-file-translator-pdf-done` | PDF 解析器完成状态 | 追踪进度 |
+| 4 | `/save-session any-file-translator-parsers-done` | 所有解析器完成状态 | 追踪进度 |
+| 5 | `/save-session any-file-translator-core-done` | 核心模块完成状态 | 追踪进度 |
+| 6 | `/save-session any-file-translator-integration-done` | 集成完成状态 | 追踪进度 |
+| 7 | `/save-session any-file-translator-complete` | 全部完成状态 | 最终状态保存 |
+
+---
+
+### 📋 新需求实现要点
+
+1. **多格式输出**
+   - 在 `output` 模块实现 PDF、DOCX、Markdown 输出
+   - 配置文件中添加输出格式选项
+
+2. **超大文件拆分**
+   - 在 `chunking` 模块实现文件大小检测
+   - 超过阈值时自动拆分为多个输出文件
+   - 生成文件命名规则：`output_1.pdf`, `output_2.pdf` 等
+
+3. **跨会话上下文保存**
+   - 使用 `/save-session` 保存关键节点
+   - 使用 `/resume-session` 恢复上下文
+   - 确保 PRD 上下文在整个开发过程中保持一致
+
+---
+
+### 💡 命令序列总结
+
+| 阶段 | 命令 | 作用 |
+|------|------|------|
+| 产品 | `/prp-prd` | 创建 PRD |
+| 保存 | `/save-session` | 跨会话保存上下文 |
+| 架构 | `architect` | 架构设计 |
+| 规划 | `/blueprint` + `/prp-plan` | 多 PR 规划 |
+| 实施 | `/prp-implement` | 执行计划 |
+| 提交 | `/prp-pr` | 创建 PR |
+| 审查 | `/code-review` | 代码审查 |
+| 验收 | `/e2e` | E2E 测试 |
+
+**一句话总结**: 跨会话保存确保 PRD 上下文在整个开发过程中保持一致，适合长期、复杂的项目开发。
