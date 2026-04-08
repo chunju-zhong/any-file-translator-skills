@@ -1,6 +1,7 @@
 """评估器模块"""
 from typing import Dict, List, Optional
 from src.evaluators.base import BaseEvaluator, EvaluationResult, EvaluationRequest
+from src.evaluators.completeness_evaluator import CompletenessEvaluator
 
 _evaluators: Dict[str, BaseEvaluator] = {}
 _default_evaluator: Optional[str] = None
@@ -38,6 +39,10 @@ def set_default_evaluator(name: str):
         from src.utils.exceptions import ConfigurationError
         raise ConfigurationError(f"Evaluator not found: {name}")
     _default_evaluator = name
+
+
+_completeness_evaluator = CompletenessEvaluator()
+register_evaluator("completeness", _completeness_evaluator, set_default=True)
 
 
 __all__ = [

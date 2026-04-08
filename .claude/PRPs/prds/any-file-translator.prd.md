@@ -156,7 +156,7 @@ AI Coding IDE 用户在处理多语言文档时面临巨大挑战：需要翻译
 | # | Phase | Description | Status | Parallel | Depends | PRP Plan |
 |---|-------|-------------|--------|----------|---------|----------|
 | 1 | Core Infrastructure | 基础架构搭建：文件处理、翻译接口、质量评估框架 | complete | - | - | .claude/PRPs/reports/core-infrastructure-report.md |
-| 2 | Basic File Support | 基础文件格式支持：.txt, .md, 直接文本输入 | pending | - | 1 | - |
+| 2 | Basic File Support | 基础文件格式支持：.txt, .md, 直接文本输入 | complete | - | 1 | .claude/PRPs/reports/basic-file-support-report.md |
 | 3 | PDF Processing | PDF 文件处理：提取、拆分、输出 | pending | - | 1 | - |
 | 4 | DOCX & EPUB Support | DOCX 和 EPUB 文件格式支持 | pending | - | 1 | - |
 | 5 | Quality Evaluation System | 翻译质量评估系统：多维度评分 | pending | - | 1 | - |

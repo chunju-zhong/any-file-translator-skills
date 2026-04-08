@@ -1,6 +1,8 @@
 """翻译器模块"""
 from typing import Dict, List, Optional
 from src.translators.base import BaseTranslator, TranslationResult, TranslationRequest
+from src.translators.openai_translator import OpenAITranslator
+from src.config import load_config
 
 _translators: Dict[str, BaseTranslator] = {}
 _default_translator: Optional[str] = None
@@ -38,6 +40,11 @@ def set_default_translator(name: str):
         from src.utils.exceptions import ConfigurationError
         raise ConfigurationError(f"Translator not found: {name}")
     _default_translator = name
+
+
+_config = load_config()
+_openai_translator = OpenAITranslator(_config.translator.model_dump())
+register_translator("openai", _openai_translator, set_default=True)
 
 
 __all__ = [
