@@ -163,7 +163,7 @@ gh pr merge 1 --squash
 /code-review 2
 
 # 保存会话
-/save-session any-file-translator-pdf-done
+/save-session any-file-translator-pdf-parser-done
 ```
 
 # 提交新生成的审查报告和会话文件
@@ -192,31 +192,17 @@ gh pr merge 2 --squash
 # 代码审查
 /code-review 3
 
-# 合并分支
-gh pr merge 3 --squash
-
-# 生成 EPUB 解析器计划
-/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
-
-# 执行计划
-/prp-implement .claude/PRPs/plans/epub-parser.plan.md
-
-# 创建 PR
-/prp-pr
-
-# 代码审查
-/code-review 4
-
 # 保存会话
-/save-session any-file-translator-parsers-done
-```
+/save-session any-file-translator-docx-epub-support-done
 
 # 提交新生成的审查报告和会话文件
 /prp-commit
 
 # 合并分支
-gh pr merge 4 --squash
+gh pr merge 3 --squash
 
+```
+ 
 ---
 
 #### 会话 6: 分块策略和翻译引擎
@@ -235,10 +221,13 @@ gh pr merge 4 --squash
 /prp-pr
 
 # 代码审查
-/code-review 5
+/code-review 4
+
+# 提交新生成的审查报告和会话文件
+/prd-commit
 
 # 合并分支
-gh pr merge 5 --squash
+gh pr merge 4 --squash
 
 # 生成翻译引擎计划
 /prp-plan .claude/PRPs/prd/any-file-translator.prd.md
