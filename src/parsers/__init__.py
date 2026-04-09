@@ -3,6 +3,7 @@ from typing import Dict, List, Optional
 from src.parsers.base import BaseParser, ParseResult, Chapter
 from src.parsers.txt_parser import TxtParser
 from src.parsers.md_parser import MdParser
+from src.parsers.pdf_parser import PdfParser
 
 _parsers: Dict[str, BaseParser] = {}
 
@@ -35,6 +36,9 @@ register_parser([".txt"], _txt_parser)
 
 _md_parser = MdParser()
 register_parser([".md", ".markdown"], _md_parser)
+
+_pdf_parser = PdfParser()
+register_parser([".pdf"], _pdf_parser)
 
 
 __all__ = [
