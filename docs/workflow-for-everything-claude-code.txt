@@ -483,7 +483,7 @@ architect
 # 输出: docs/architecture.md, docs/ADR-001-architecture-decisions.md
 
 # Step 4: 保存会话（跨会话保存 架构 上下文）
-/save-session any-file-translator-architect                  │
+/save-session any-file-translator-architect
 
 # Step 5: 多 PR 规划
 /blueprint any-file-translator "build document translation skill with multi-format output"
