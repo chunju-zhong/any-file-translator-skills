@@ -174,7 +174,7 @@ gh pr merge 2 --squash
 
 ---
 
-#### 会话 5: 实施阶段（其他解析器）
+#### 会话 5: 实施阶段（docx-epub-support）
 
 ```bash
 # 恢复会话
@@ -184,7 +184,7 @@ gh pr merge 2 --squash
 /prp-plan .claude/PRPs/prd/any-file-translator.prd.md
 
 # 执行计划
-/prp-implement .claude/PRPs/plans/docx-parser.plan.md
+/prp-implement .claude/PRPs/plans/docx-epub-support.plan.md
 
 # 创建 PR
 /prp-pr
