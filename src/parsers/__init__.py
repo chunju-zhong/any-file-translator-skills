@@ -4,6 +4,8 @@ from src.parsers.base import BaseParser, ParseResult, Chapter
 from src.parsers.txt_parser import TxtParser
 from src.parsers.md_parser import MdParser
 from src.parsers.pdf_parser import PdfParser
+from src.parsers.docx_parser import DocxParser
+from src.parsers.epub_parser import EpubParser
 
 _parsers: Dict[str, BaseParser] = {}
 
@@ -39,6 +41,12 @@ register_parser([".md", ".markdown"], _md_parser)
 
 _pdf_parser = PdfParser()
 register_parser([".pdf"], _pdf_parser)
+
+_docx_parser = DocxParser()
+register_parser([".docx"], _docx_parser)
+
+_epub_parser = EpubParser()
+register_parser([".epub"], _epub_parser)
 
 
 __all__ = [
