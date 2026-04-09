@@ -93,12 +93,15 @@ architect
 
 # 输出: 审查结果
 
-# Step 10: 合并分支
-gh pr merge 1 --squash
-
 # 保存会话（保存完成状态）
 /save-session any-file-translator-core-infrastructure-done
 ```
+
+# 提交新生成的审查报告和会话文件
+/prp-commit
+
+# Step 10: 合并分支
+gh pr merge 1 --squash
 
 ---
 
@@ -126,11 +129,15 @@ gh pr merge 1 --squash
 
 # 输出: 审查结果
 
+# 保存会话（保存完成状态）
+/save-session any-file-translator-basic-file-support-done
+
+# 提交新生成的审查报告和会话文件
+/prp-commit
+
 # Step 10: 合并分支
 gh pr merge 1 --squash
 
-# 保存会话（保存完成状态）
-/save-session any-file-translator-basic-file-support-done
 ```
 
 ---
@@ -155,12 +162,15 @@ gh pr merge 1 --squash
 # 代码审查
 /code-review 2
 
-# 合并分支
-gh pr merge 2 --squash
-
 # 保存会话
 /save-session any-file-translator-pdf-done
 ```
+
+# 提交新生成的审查报告和会话文件
+/prp-commit
+
+# 合并分支
+gh pr merge 2 --squash
 
 ---
 
@@ -197,12 +207,15 @@ gh pr merge 3 --squash
 # 代码审查
 /code-review 4
 
-# 合并分支
-gh pr merge 4 --squash
-
 # 保存会话
 /save-session any-file-translator-parsers-done
 ```
+
+# 提交新生成的审查报告和会话文件
+/prp-commit
+
+# 合并分支
+gh pr merge 4 --squash
 
 ---
 
@@ -239,11 +252,15 @@ gh pr merge 5 --squash
 # 代码审查
 /code-review 6
 
+# 保存会话
+/save-session any-file-translator-core-done
+
+# 提交新生成的审查报告和会话文件
+/prp-commit
+
 # 合并分支
 gh pr merge 6 --squash
 
-# 保存会话
-/save-session any-file-translator-core-done
 ```
 
 ---
@@ -281,11 +298,15 @@ gh pr merge 7 --squash
 # 代码审查
 /code-review 8
 
+# 保存会话
+/save-session any-file-translator-integration-done
+
+# 提交新生成的审查报告和会话文件
+/prp-commit
+
 # 合并分支
 gh pr merge 8 --squash
 
-# 保存会话
-/save-session any-file-translator-integration-done
 ```
 
 ---
@@ -483,7 +504,7 @@ architect
 # 输出: docs/architecture.md, docs/ADR-001-architecture-decisions.md
 
 # Step 4: 保存会话（跨会话保存 架构 上下文）
-/save-session any-file-translator-architect
+/save-session any-file-translator-architect                  │
 
 # Step 5: 多 PR 规划
 /blueprint any-file-translator "build document translation skill with multi-format output"
