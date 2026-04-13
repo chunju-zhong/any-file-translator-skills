@@ -4,6 +4,7 @@ from typing import Optional
 from src.parsers import get_parser, list_supported_formats
 from src.translators import get_translator
 from src.evaluators import get_evaluator
+from src.improvers import get_improver
 from src.config import load_config
 from src.utils.logger import get_logger, setup_logger
 from src.utils.exceptions import TranslationError
@@ -63,23 +64,60 @@ class Translator:
             evaluation_result = self.evaluator.evaluate(evaluation_request)
             self.logger.info("quality_evaluated", score=evaluation_result.overall_score)
             
+            translated_text = translation_result.text
+            final_quality_score = evaluation_result.overall_score
+            final_issues = evaluation_result.issues
+            final_suggestions = evaluation_result.suggestions
+            iterations = 0
+            quality_improved = False
+            
+            if self.config.improvement.enabled:
+                improver = get_improver(
+                    self.translator,
+                    self.evaluator,
+                    self.config.improvement.model_dump()
+                )
+                
+                improved_text, iteration_result = improver.improve(
+                    original_text=parse_result.text,
+                    initial_translation=translation_result.text,
+                    source_language=source_language,
+                    target_language=target_language
+                )
+                
+                translated_text = improved_text
+                final_quality_score = iteration_result.quality_score
+                final_issues = iteration_result.issues
+                final_suggestions = iteration_result.suggestions
+                iterations = iteration_result.iteration_number
+                quality_improved = iteration_result.iteration_number > 0
+                
+                self.logger.info(
+                    "iterative_improvement_completed",
+                    iterations=iterations,
+                    final_score=final_quality_score,
+                    improved=quality_improved
+                )
+            
             if output_path:
-                self._save_output(translation_result.text, output_path)
+                self._save_output(translated_text, output_path)
             
             return {
                 "original_text": parse_result.text,
-                "translated_text": translation_result.text,
-                "quality_score": evaluation_result.overall_score,
+                "translated_text": translated_text,
+                "quality_score": final_quality_score,
                 "completeness_score": evaluation_result.completeness_score,
-                "issues": evaluation_result.issues,
-                "suggestions": evaluation_result.suggestions,
+                "issues": final_issues,
+                "suggestions": final_suggestions,
                 "metadata": {
                     "source_file": file_path,
                     "source_language": source_language,
                     "target_language": target_language,
                     "format": parse_result.format_type,
                     "model": translation_result.model,
-                    "usage": translation_result.usage
+                    "usage": translation_result.usage,
+                    "iterations": iterations,
+                    "quality_improved": quality_improved
                 }
             }
         
@@ -119,18 +157,55 @@ class Translator:
             )
             evaluation_result = self.evaluator.evaluate(evaluation_request)
             
+            translated_text = translation_result.text
+            final_quality_score = evaluation_result.overall_score
+            final_issues = evaluation_result.issues
+            final_suggestions = evaluation_result.suggestions
+            iterations = 0
+            quality_improved = False
+            
+            if self.config.improvement.enabled:
+                improver = get_improver(
+                    self.translator,
+                    self.evaluator,
+                    self.config.improvement.model_dump()
+                )
+                
+                improved_text, iteration_result = improver.improve(
+                    original_text=text,
+                    initial_translation=translation_result.text,
+                    source_language=source_language,
+                    target_language=target_language
+                )
+                
+                translated_text = improved_text
+                final_quality_score = iteration_result.quality_score
+                final_issues = iteration_result.issues
+                final_suggestions = iteration_result.suggestions
+                iterations = iteration_result.iteration_number
+                quality_improved = iteration_result.iteration_number > 0
+                
+                self.logger.info(
+                    "iterative_improvement_completed",
+                    iterations=iterations,
+                    final_score=final_quality_score,
+                    improved=quality_improved
+                )
+            
             return {
                 "original_text": text,
-                "translated_text": translation_result.text,
-                "quality_score": evaluation_result.overall_score,
+                "translated_text": translated_text,
+                "quality_score": final_quality_score,
                 "completeness_score": evaluation_result.completeness_score,
-                "issues": evaluation_result.issues,
-                "suggestions": evaluation_result.suggestions,
+                "issues": final_issues,
+                "suggestions": final_suggestions,
                 "metadata": {
                     "source_language": source_language,
                     "target_language": target_language,
                     "model": translation_result.model,
-                    "usage": translation_result.usage
+                    "usage": translation_result.usage,
+                    "iterations": iterations,
+                    "quality_improved": quality_improved
                 }
             }
         

@@ -82,8 +82,8 @@ git status --porcelain
 | Current State | Action |
 |---|---|
 | On feature branch | Use current branch |
-| On main, clean working tree | Create feature branch: `git checkout -b feat/{plan-name}` |
-| On main, dirty working tree | **STOP** — Ask user to stash or commit first |
+| On main or develop, clean working tree | Create feature branch: `git checkout -b feat/{plan-name}` |
+| On main or develop, dirty working tree | **STOP** — Ask user to stash or commit first |
 | In a git worktree for this feature | Use the worktree |
 
 ### Sync Remote
