@@ -205,7 +205,7 @@ gh pr merge 3 --squash
  
 ---
 
-#### 会话 6: 分块策略和翻译引擎
+#### 会话 7: iterative-improvement
 
 ```bash
 # 恢复会话
@@ -215,88 +215,32 @@ gh pr merge 3 --squash
 /prp-plan .claude/PRPs/prd/any-file-translator.prd.md
 
 # 执行计划
-/prp-implement .claude/PRPs/plans/chunking.plan.md
+/prp-implement .claude/PRPs/plans/iterative-improvement.plan.md
+
+# 不同模型代码审查 本地
+/code-review
+
+# 提交实现
+/prp-commit
 
 # 创建 PR
 /prp-pr
 
-# 代码审查
+# 不同模型代码审查
 /code-review 4
 
+# 保存会话
+/save-session any-file-translator-iterative-improvement-done
+
 # 提交新生成的审查报告和会话文件
-/prd-commit
+/prp-commit
 
 # 合并分支
 gh pr merge 4 --squash
 
-# 生成翻译引擎计划
-/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
-
-# 执行计划
-/prp-implement .claude/PRPs/plans/translation-engine.plan.md
-
-# 创建 PR
-/prp-pr
-
-# 代码审查
-/code-review 6
-
-# 保存会话
-/save-session any-file-translator-core-done
-
-# 提交新生成的审查报告和会话文件
-/prp-commit
-
-# 合并分支
-gh pr merge 6 --squash
-
 ```
 
----
-
-#### 会话 7: 输出层和 Skill 集成
-
-```bash
-# 恢复会话
-/resume-session any-file-translator-prd
-
-# 生成输出层计划
-/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
-
-# 执行计划
-/prp-implement .claude/PRPs/plans/output.plan.md
-
-# 创建 PR
-/prp-pr
-
-# 代码审查
-/code-review 7
-
-# 合并分支
-gh pr merge 7 --squash
-
-# 生成 Skill 集成计划
-/prp-plan .claude/PRPs/prd/any-file-translator.prd.md
-
-# 执行计划
-/prp-implement .claude/PRPs/plans/skill-integration.plan.md
-
-# 创建 PR
-/prp-pr
-
-# 代码审查
-/code-review 8
-
-# 保存会话
-/save-session any-file-translator-integration-done
-
-# 提交新生成的审查报告和会话文件
-/prp-commit
-
-# 合并分支
-gh pr merge 8 --squash
-
-```
+continue do it for all pr develop.....
 
 ---
 
