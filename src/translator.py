@@ -4,6 +4,7 @@ from typing import Optional
 from src.parsers import get_parser, list_supported_formats
 from src.translators import get_translator
 from src.evaluators import get_evaluator
+from src.improver import IterativeImprover
 from src.config import load_config
 from src.utils.logger import get_logger, setup_logger
 from src.utils.exceptions import TranslationError
@@ -22,6 +23,14 @@ class Translator:
         self.parser = None
         self.translator = get_translator()
         self.evaluator = get_evaluator()
+        
+        improvement_config = {
+            "quality_threshold": self.config.improvement.quality_threshold,
+            "max_iterations": self.config.improvement.max_iterations,
+            "improvement_delay": self.config.improvement.improvement_delay,
+            "enable_improvement": self.config.improvement.enable_improvement
+        }
+        self.improver = IterativeImprover(improvement_config)
     
     def translate_file(
         self,
@@ -63,6 +72,65 @@ class Translator:
             evaluation_result = self.evaluator.evaluate(evaluation_request)
             self.logger.info("quality_evaluated", score=evaluation_result.overall_score)
             
+            if self.config.improvement.enable_improvement and evaluation_result.overall_score < self.config.improvement.quality_threshold:
+                self.logger.info(
+                    "improvement_triggered",
+                    score=evaluation_result.overall_score,
+                    threshold=self.config.improvement.quality_threshold
+                )
+                
+                improvement_result = self.improver.improve_translation(
+                    parse_result.text,
+                    translation_result.text,
+                    evaluation_result,
+                    self.translator,
+                    source_language,
+                    target_language
+                )
+                
+                if output_path:
+                    self._save_output(improvement_result.final_text, output_path)
+                
+                return {
+                    "original_text": parse_result.text,
+                    "translated_text": improvement_result.final_text,
+                    "quality_score": improvement_result.final_score,
+                    "completeness_score": evaluation_result.completeness_score,
+                    "issues": evaluation_result.issues,
+                    "suggestions": evaluation_result.suggestions,
+                    "improvement_iterations": improvement_result.iterations,
+                    "improvement_success": improvement_result.success,
+                    "metadata": {
+                        "source_file": file_path,
+                        "source_language": source_language,
+                        "target_language": target_language,
+                        "format": parse_result.format_type,
+                        "model": translation_result.model,
+                        "usage": translation_result.usage,
+                        "improvement_history": improvement_result.improvement_history
+                    }
+                }
+            
+            if output_path:
+                self._save_output(translation_result.text, output_path)
+            
+            return {
+                "original_text": parse_result.text,
+                "translated_text": translation_result.text,
+                "quality_score": evaluation_result.overall_score,
+                "completeness_score": evaluation_result.completeness_score,
+                "issues": evaluation_result.issues,
+                "suggestions": evaluation_result.suggestions,
+                "metadata": {
+                    "source_file": file_path,
+                    "source_language": source_language,
+                    "target_language": target_language,
+                    "format": parse_result.format_type,
+                    "model": translation_result.model,
+                    "usage": translation_result.usage
+                }
+            }
+        
             if output_path:
                 self._save_output(translation_result.text, output_path)
             
@@ -118,6 +186,40 @@ class Translator:
                 target_language=target_language
             )
             evaluation_result = self.evaluator.evaluate(evaluation_request)
+            
+            if self.config.improvement.enable_improvement and evaluation_result.overall_score < self.config.improvement.quality_threshold:
+                self.logger.info(
+                    "improvement_triggered",
+                    score=evaluation_result.overall_score,
+                    threshold=self.config.improvement.quality_threshold
+                )
+                
+                improvement_result = self.improver.improve_translation(
+                    text,
+                    translation_result.text,
+                    evaluation_result,
+                    self.translator,
+                    source_language,
+                    target_language
+                )
+                
+                return {
+                    "original_text": text,
+                    "translated_text": improvement_result.final_text,
+                    "quality_score": improvement_result.final_score,
+                    "completeness_score": evaluation_result.completeness_score,
+                    "issues": evaluation_result.issues,
+                    "suggestions": evaluation_result.suggestions,
+                    "improvement_iterations": improvement_result.iterations,
+                    "improvement_success": improvement_result.success,
+                    "metadata": {
+                        "source_language": source_language,
+                        "target_language": target_language,
+                        "model": translation_result.model,
+                        "usage": translation_result.usage,
+                        "improvement_history": improvement_result.improvement_history
+                    }
+                }
             
             return {
                 "original_text": text,

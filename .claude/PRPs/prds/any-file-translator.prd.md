@@ -159,8 +159,8 @@ AI Coding IDE 用户在处理多语言文档时面临巨大挑战：需要翻译
 | 2 | Basic File Support | 基础文件格式支持：.txt, .md, 直接文本输入 | complete | - | 1 | .claude/PRPs/reports/basic-file-support-report.md |
 | 3 | PDF Processing | PDF 文件处理：提取、拆分、输出 | complete | - | 1 | .claude/PRPs/reports/pdf-processing-report.md |
 | 4 | DOCX & EPUB Support | DOCX 和 EPUB 文件格式支持 | completed | - | 1 | .claude/PRPs/plans/docx-epub-support.plan.md |
-| 5 | Quality Evaluation System | 翻译质量评估系统：多维度评分 | pending | - | 1 | - |
-| 6 | Iterative Improvement | 迭代改进机制：自动改进不达标翻译 | pending | - | 5 | - |
+| 5 | Quality Evaluation System | 翻译质量评估系统：多维度评分 | complete | - | 1 | .claude/PRPs/reports/quality-evaluation-system-report.md |
+| 6 | Iterative Improvement | 迭代改进机制：自动改进不达标翻译 | complete | - | 5 | .claude/PRPs/reports/iterative-improvement-report.md |
 | 7 | Large File Handling | 超大文件处理：智能拆分、并行翻译 | pending | - | 3, 4 | - |
 | 8 | Multi-API Support | 多翻译 API 支持：OpenAI, DeepL, Google, IDE 内置模型 | pending | - | 1 | - |
 | 9 | Output Formatting | 输出格式化：PDF, DOCX, Markdown 输出 | pending | - | 2, 3, 4 | - |

@@ -32,11 +32,20 @@ class OutputSettings(BaseModel):
     bilingual: bool = Field(default=False, description="是否双语对照")
 
 
+class ImprovementSettings(BaseModel):
+    """迭代改进配置"""
+    quality_threshold: float = Field(default=85.0, description="质量阈值（低于此值触发改进）")
+    max_iterations: int = Field(default=3, description="最大改进迭代次数")
+    improvement_delay: float = Field(default=1.0, description="改进迭代延迟（秒）")
+    enable_improvement: bool = Field(default=True, description="是否启用迭代改进")
+
+
 class Config(BaseModel):
     """完整配置"""
     translator: TranslatorSettings = Field(default_factory=TranslatorSettings)
     processing: ProcessingSettings = Field(default_factory=ProcessingSettings)
     output: OutputSettings = Field(default_factory=OutputSettings)
+    improvement: ImprovementSettings = Field(default_factory=ImprovementSettings)
 
 
 def load_config(config_path: Optional[str] = None) -> Config:
