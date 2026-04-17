@@ -51,6 +51,24 @@ class LargeFileSettings(BaseModel):
     progress_tracking: bool = Field(default=True, description="是否启用进度跟踪")
 
 
+class DeepLSettings(BaseModel):
+    """DeepL 翻译配置"""
+    enabled: bool = Field(default=False, description="是否启用 DeepL")
+    api_key: str = Field(default="", description="DeepL API 密钥")
+    base_url: str = Field(default="https://api.deepl.com/v2", description="API 基础 URL")
+    formality: str = Field(default="default", description="正式程度: default, more, less")
+    priority: int = Field(default=2, description="优先级 (1=最高)")
+    timeout: int = Field(default=60, description="请求超时时间（秒）")
+
+
+class GoogleTranslateSettings(BaseModel):
+    """Google Translate 翻译配置"""
+    enabled: bool = Field(default=False, description="是否启用 Google Translate")
+    api_key: str = Field(default="", description="Google Cloud API 密钥")
+    priority: int = Field(default=3, description="优先级 (1=最高)")
+    timeout: int = Field(default=60, description="请求超时时间（秒）")
+
+
 class Config(BaseModel):
     """完整配置"""
     translator: TranslatorSettings = Field(default_factory=TranslatorSettings)
@@ -58,6 +76,8 @@ class Config(BaseModel):
     output: OutputSettings = Field(default_factory=OutputSettings)
     improvement: IterativeImprovementSettings = Field(default_factory=IterativeImprovementSettings)
     large_file: LargeFileSettings = Field(default_factory=LargeFileSettings)
+    deepl: DeepLSettings = Field(default_factory=DeepLSettings)
+    google_translate: GoogleTranslateSettings = Field(default_factory=GoogleTranslateSettings)
 
 
 def load_config(config_path: Optional[str] = None) -> Config:

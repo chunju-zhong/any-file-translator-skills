@@ -162,7 +162,7 @@ AI Coding IDE 用户在处理多语言文档时面临巨大挑战：需要翻译
 | 5 | Quality Evaluation System | 翻译质量评估系统：多维度评分 | complete | - | 1 | .claude/PRPs/reports/quality-evaluation-system-report.md |
 | 6 | Iterative Improvement | 迭代改进机制：自动改进不达标翻译 | complete | - | 5 | .claude/PRPs/reports/iterative-improvement-report.md |
 | 7 | Large File Handling | 超大文件处理：智能拆分、并行翻译 | complete | - | 3, 4 | .claude/PRPs/reports/large-file-handling-report.md |
-| 8 | Multi-API Support | 多翻译 API 支持：OpenAI, DeepL, Google, IDE 内置模型 | in-progress | - | 1 | .claude/PRPs/plans/multi-api-support.plan.md |
+| 8 | Multi-API Support | 多翻译 API 支持：OpenAI, DeepL, Google, IDE 内置模型 | complete | - | 1 | .claude/PRPs/reports/multi-api-support-report.md |
 | 9 | Output Formatting | 输出格式化：PDF, DOCX, Markdown 输出 | pending | - | 2, 3, 4 | - |
 | 10 | Integration & Polish | 集成测试、性能优化、文档完善 | pending | - | all | - |
 
