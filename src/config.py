@@ -40,12 +40,24 @@ class IterativeImprovementSettings(BaseModel):
     track_history: bool = Field(default=False, description="是否记录改进历史")
 
 
+class LargeFileSettings(BaseModel):
+    """大文件处理配置"""
+    enabled: bool = Field(default=True, description="是否启用大文件处理")
+    size_threshold_pages: int = Field(default=100, description="页数阈值（超过此值触发分块）")
+    size_threshold_mb: float = Field(default=50.0, description="文件大小阈值 MB（超过此值触发分块）")
+    chunk_size: int = Field(default=50, description="分块大小（页数）")
+    max_parallel_chunks: int = Field(default=4, description="最大并行处理块数")
+    merge_strategy: str = Field(default="sequential", description="合并策略：sequential, parallel")
+    progress_tracking: bool = Field(default=True, description="是否启用进度跟踪")
+
+
 class Config(BaseModel):
     """完整配置"""
     translator: TranslatorSettings = Field(default_factory=TranslatorSettings)
     processing: ProcessingSettings = Field(default_factory=ProcessingSettings)
     output: OutputSettings = Field(default_factory=OutputSettings)
     improvement: IterativeImprovementSettings = Field(default_factory=IterativeImprovementSettings)
+    large_file: LargeFileSettings = Field(default_factory=LargeFileSettings)
 
 
 def load_config(config_path: Optional[str] = None) -> Config:
