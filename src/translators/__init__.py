@@ -2,6 +2,9 @@
 from typing import Dict, List, Optional
 from src.translators.base import BaseTranslator, TranslationResult, TranslationRequest
 from src.translators.openai_translator import OpenAITranslator
+from src.translators.deepl_translator import DeepLTranslator
+from src.translators.google_translator import GoogleTranslator
+from src.translators.selector import TranslatorSelector, SelectionResult
 from src.config import load_config
 
 _translators: Dict[str, BaseTranslator] = {}
@@ -43,8 +46,17 @@ def set_default_translator(name: str):
 
 
 _config = load_config()
+
 _openai_translator = OpenAITranslator(_config.translator.model_dump())
 register_translator("openai", _openai_translator, set_default=True)
+
+if _config.deepl.enabled and _config.deepl.api_key:
+    _deepl_translator = DeepLTranslator(_config.deepl.model_dump())
+    register_translator("deepl", _deepl_translator)
+
+if _config.google_translate.enabled and _config.google_translate.api_key:
+    _google_translator = GoogleTranslator(_config.google_translate.model_dump())
+    register_translator("google", _google_translator)
 
 
 __all__ = [
@@ -55,4 +67,9 @@ __all__ = [
     'get_translator',
     'list_translators',
     'set_default_translator',
+    'TranslatorSelector',
+    'SelectionResult',
+    'OpenAITranslator',
+    'DeepLTranslator',
+    'GoogleTranslator',
 ]
